@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Results from './components/Results/Results';
+import Form from './components/Form/Form';
+import useDataAPI from './utils/useDataAPI';
 
-function App() {
+const DivApp = styled.div`
+  text-align: center;
+`;
+
+const App = () => {
+  const [ query, setQuery ] = useState('Stark');
+  const [{ data, isLoading, isError }, fetchData] = useDataAPI(`https://www.anapioficeandfire.com/api?query=${query}`);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DivApp>
+      <Form query={query} setQuery={setQuery} fetchData={fetchData} />
+      { isError && <div>Something went wrong...</div> }
+      { isLoading ? <div>Loading...</div> : <Results data={data} /> }
+    </DivApp>
   );
-}
+};
 
 export default App;
