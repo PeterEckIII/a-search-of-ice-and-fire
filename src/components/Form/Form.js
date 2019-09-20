@@ -1,16 +1,17 @@
 import React from 'react';
 
-const Form = (props) => {
+const Form = ({ query, setQuery, fetchData }) => {
     return (
         <>
-            <form onSubmit={(e) => {
-                props.fetchData(`https://www.anapioficeandfire.com/api?query=${props.query}`)
+            <form onSubmit={ (e) => {
+                // TODO: This might be where the error is. The endpoint doesn't return a result
                 e.preventDefault();
-            }}>
-                <input 
+                fetchData(`https://www.anapioficeandfire.com/api/characters`);
+            } }>
+                <input
                     type="text"
-                    value={props.query}
-                    onChange={(e) => props.setQuery(e.target.value)}
+                    value={ query }
+                    onChange={ (e) => setQuery(e.target.value) }
                 />
                 <button type="submit">Search</button>
             </form>
